@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KampusQuest — Tantangan Cerdas Mahasiswa</title>
+<style>
+:root{
+ --navy:#182544;--muted:#68748e;--purple:#6857d9;--purple2:#8b7cf0;
+ --cyan:#dff7f4;--pink:#ffe8ef;--yellow:#fff2cb;--paper:#ffffff;
+ --bg:#f4f6fc;--line:#e7eaf3;--green:#17865c;--red:#c34e68;
+}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(circle at 10% 0%,#e9e7ff 0,transparent 30%),radial-gradient(circle at 95% 15%,#ddf6f2 0,transparent 27%),var(--bg);font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;color:var(--navy);min-height:100vh}
+button{font:inherit;cursor:pointer}
+header{max-width:1120px;margin:auto;padding:22px 24px;display:flex;align-items:center;justify-content:space-between;gap:14px}
+.brand{display:flex;align-items:center;gap:11px;font-weight:900;font-size:21px;letter-spacing:-.5px}
+.brand-mark{width:42px;height:42px;border-radius:14px;background:linear-gradient(135deg,var(--purple),#9a8df5);display:grid;place-items:center;color:#fff;font-size:22px;box-shadow:0 7px 18px #6857d933}
+.brand small{display:block;font-size:10px;color:var(--muted);font-weight:700;letter-spacing:1.3px;margin-top:1px}
+.header-right{display:flex;align-items:center;gap:9px;flex-wrap:wrap;justify-content:flex-end}
+.stat-chip{background:#fff;border:1px solid var(--line);padding:9px 13px;border-radius:30px;font-size:13px;font-weight:800;box-shadow:0 4px 12px #202b4d08}
+.wrap{max-width:1060px;margin:10px auto 0;padding:0 24px 48px}
+.hero{position:relative;overflow:hidden;border-radius:27px;padding:34px 36px;background:linear-gradient(115deg,#252e59,#5144a5 62%,#8073df);color:#fff;display:flex;align-items:center;justify-content:space-between;gap:20px;box-shadow:0 18px 45px #3e367522}
+.hero:after{content:"";position:absolute;width:270px;height:270px;border:1px solid #ffffff20;border-radius:50%;right:70px;top:-140px;box-shadow:0 0 0 35px #ffffff09,0 0 0 70px #ffffff08}
+.hero-copy{position:relative;z-index:1;max-width:660px}
+.eyebrow{font-size:11px;letter-spacing:2px;font-weight:900;color:#d9d4ff}
+.hero h1{font-size:clamp(30px,5vw,47px);line-height:1.08;letter-spacing:-1.6px;margin:12px 0}
+.hero p{color:#e5e4ff;line-height:1.65;max-width:610px;margin:0}
+.hero-art{font-size:86px;position:relative;z-index:1;filter:drop-shadow(0 12px 12px #171b3c55)}
+.section-head{display:flex;justify-content:space-between;align-items:end;gap:12px;margin:29px 2px 14px}
+.section-head h2{font-size:21px;margin:0;letter-spacing:-.5px}
+.section-head p{font-size:12px;color:var(--muted);margin:5px 0 0}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:13px}
+.category{border:1px solid var(--line);background:#fff;border-radius:19px;padding:18px;text-align:left;min-height:145px;transition:.18s;box-shadow:0 5px 16px #202b4d06;color:var(--navy)}
+.category:hover,.category.selected{transform:translateY(-3px);border-color:#a99ff0;box-shadow:0 12px 24px #6857d91a}
+.category.selected{outline:2px solid #d7d2ff;background:#fbfaff}
+.cat-icon{width:42px;height:42px;border-radius:13px;display:grid;place-items:center;font-size:22px;margin-bottom:12px}
+.category b{display:block;font-size:15px;margin-bottom:5px}
+.category span{display:block;color:var(--muted);font-size:12px;line-height:1.45}
+.c1{background:#eeeaff}.c2{background:#e1f7f4}.c3{background:#fff2d8}.c4{background:#ffe9ef}.c5{background:#e8f0ff}.c6{background:#e9f6e6}
+.bottom-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:14px;margin-top:17px}
+.card{background:#fff;border:1px solid var(--line);border-radius:20px;padding:19px;box-shadow:0 5px 16px #202b4d06}
+.card h3{font-size:15px;margin:0 0 9px}
+.card p{font-size:12px;line-height:1.6;color:var(--muted);margin:0}
+.how-list{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+.how{background:#f7f7fc;border-radius:12px;padding:10px 12px;font-size:11px;color:#4c5875;font-weight:700}
+.reward-preview{display:flex;gap:9px;align-items:center;margin-top:12px}
+.reward-icon{width:38px;height:38px;background:var(--yellow);border-radius:12px;display:grid;place-items:center;font-size:20px}
+.reward-preview b{font-size:12px;display:block}.reward-preview small{color:var(--muted);font-size:11px}
+.primary{border:0;background:linear-gradient(120deg,var(--purple),var(--purple2));color:#fff;padding:14px 20px;border-radius:13px;font-weight:850;box-shadow:0 8px 18px #6857d933}
+.primary:hover{filter:brightness(1.05);transform:translateY(-1px)}
+.secondary{border:1px solid var(--line);background:#fff;color:#53607c;padding:11px 15px;border-radius:12px;font-weight:750}
+.full{width:100%;margin-top:17px}
+.hidden{display:none!important}
+.play-card,.result-card{margin-top:20px;background:#fff;border:1px solid var(--line);border-radius:24px;padding:25px;box-shadow:0 12px 35px #202b4d0b}
+.play-top{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.pill{border-radius:30px;background:#f1efff;color:#5d50c1;padding:8px 12px;font-size:12px;font-weight:850}
+.progress-wrap{margin:18px 0 23px}
+.progress-label{display:flex;justify-content:space-between;color:var(--muted);font-size:11px;font-weight:750}
+.progress{height:9px;background:#edf0f7;border-radius:20px;overflow:hidden;margin-top:8px}
+.progress i{height:100%;width:0;display:block;background:linear-gradient(90deg,#6b5bdb,#83cfc4);border-radius:20px;transition:width .25s}
+.q-number{font-size:11px;color:var(--purple);font-weight:900;letter-spacing:1.5px}
+.question{font-size:clamp(20px,3vw,27px);line-height:1.35;letter-spacing:-.6px;font-weight:850;margin:9px 0 20px;max-width:820px}
+.answers{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+.answer{border:1.5px solid var(--line);background:#fff;border-radius:14px;padding:15px;text-align:left;min-height:62px;color:#34415f;font-size:14px;font-weight:700;display:flex;gap:12px;align-items:center;transition:.15s}
+.answer:hover:not(:disabled){border-color:#aaa0ed;background:#faf9ff}
+.answer .letter{width:29px;height:29px;border-radius:9px;background:#f1f2f8;display:grid;place-items:center;flex-shrink:0;font-size:12px;color:#66718b}
+.answer.correct{border-color:#81c9a7;background:#effaf4}.answer.correct .letter{background:#d5f1e2;color:var(--green)}
+.answer.wrong{border-color:#e6a0af;background:#fff2f4}.answer:disabled{cursor:default}
+.feedback{border-radius:14px;padding:14px 16px;margin-top:15px;font-size:13px;line-height:1.6}
+.feedback.good{background:#effaf4;color:#286b4d}.feedback.bad{background:#fff2f4;color:#93475a}
+.play-actions{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:18px;flex-wrap:wrap}
+.result-top{text-align:center;padding:8px 0 18px}
+.result-emoji{font-size:65px}.result-top h2{font-size:27px;margin:7px 0}.result-top p{color:var(--muted);font-size:13px;margin:0}
+.score-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:15px 0}
+.score-box{background:#f7f8fc;border-radius:15px;padding:15px;text-align:center}
+.score-box b{display:block;font-size:25px;letter-spacing:-1px}.score-box small{font-size:11px;color:var(--muted);font-weight:700}
+.reward-box{background:linear-gradient(110deg,#fff5d9,#fff0e9);border:1px solid #f8e7bf;border-radius:16px;padding:16px;margin:15px 0}
+.reward-box b{display:block;margin-bottom:4px}.reward-box p{margin:0;color:#756444;font-size:12px;line-height:1.5}
+.review{margin:18px 0}.review h3{font-size:15px}.review-item{border-bottom:1px solid var(--line);padding:11px 0;font-size:12px;line-height:1.5}.review-item b{display:block;font-size:12px;margin-bottom:4px}
+.profile-progress{height:8px;background:#e9eaf2;border-radius:20px;overflow:hidden;margin-top:8px}.profile-progress i{display:block;height:100%;background:#7b70df;width:0}
+footer{text-align:center;color:#8992a8;font-size:11px;padding:24px}
+@media(max-width:760px){.grid{grid-template-columns:repeat(2,1fr)}.hero{padding:27px}.hero-art{font-size:62px}.bottom-grid{grid-template-columns:1fr}}
+@media(max-width:520px){header{padding:16px}.wrap{padding:0 15px 35px}.hero{padding:23px;align-items:flex-start}.hero-art{font-size:45px}.grid,.answers{grid-template-columns:1fr}.category{min-height:unset}.score-grid{grid-template-columns:repeat(2,1fr)}.play-card,.result-card{padding:18px}}
+</style>
+</head>
+<body>
+<header>
+ <div class="brand"><div class="brand-mark">✦</div><div>KampusQuest<small>LEARN • PLAY • LEVEL UP</small></div></div>
+ <div class="header-right"><div class="stat-chip">⭐ <span id="headerPoints">0</span> XP</div><div class="stat-chip">🏅 Level <span id="headerLevel">1</span></div></div>
+</header>
+<main class="wrap">
+ <section id="home">
+  <div class="hero">
+   <div class="hero-copy"><div class="eyebrow">YOUR CAMPUS COMPANION</div><h1>Belajar lebih siap,<br>kuliah lebih terarah.</h1><p>Uji pengetahuan dan latih keterampilan yang berguna selama menjadi mahasiswa. Selesaikan tantangan, kumpulkan XP, raih badge, dan buka gelar pencapaianmu!</p></div>
+   <div class="hero-art">🎓</div>
+  </div>
+  <div class="section-head"><div><h2>Pilih misi belajarmu</h2><p>Pilih topik yang ingin kamu latih hari ini.</p></div><div class="pill">10 soal / misi</div></div>
+  <div class="grid">
+   <button class="category selected" data-cat="campus" onclick="selectCat(this)"><div class="cat-icon c1">🎓</div><b>Strategi Perkuliahan</b><span>Manajemen waktu, tugas, presentasi, dan kerja kelompok.</span></button>
+   <button class="category" data-cat="digital" onclick="selectCat(this)"><div class="cat-icon c2">💻</div><b>Digital & Produktivitas</b><span>Keamanan digital, aplikasi, file, dan literasi teknologi.</span></button>
+   <button class="category" data-cat="finance" onclick="selectCat(this)"><div class="cat-icon c3">💰</div><b>Keuangan Mahasiswa</b><span>Anggaran, prioritas kebutuhan, dan kebiasaan finansial.</span></button>
+   <button class="category" data-cat="communication" onclick="selectCat(this)"><div class="cat-icon c4">🗣️</div><b>Komunikasi & Organisasi</b><span>Diskusi, kepemimpinan, etika, dan kolaborasi.</span></button>
+   <button class="category" data-cat="engineering" onclick="selectCat(this)"><div class="cat-icon c5">⚡</div><b>Teknik & Sains Dasar</b><span>Konsep dasar listrik, fisika, dan teknologi.</span></button>
+   <button class="category" data-cat="math" onclick="selectCat(this)"><div class="cat-icon c6">➗</div><b>Logika & Matematika</b><span>Hitungan, penalaran, dan pemecahan masalah.</span></button>
+  </div>
+  <div class="bottom-grid">
+   <div class="card"><h3>🧭 Cara bermain</h3><p>Setiap misi berisi 10 pertanyaan pilihan ganda. Pilih jawaban terbaik, baca pembahasannya, lalu lanjutkan sampai selesai. Nilai dihitung dari jawaban benar.</p><div class="how-list"><div class="how">① Pilih kategori</div><div class="how">② Jawab 10 soal</div><div class="how">③ Kumpulkan XP</div><div class="how">④ Raih badge</div></div></div>
+   <div class="card"><h3>🎁 Hadiah pencapaian</h3><p>Hadiah di dalam game berupa penghargaan virtual sebagai motivasi belajar, bukan hadiah uang atau barang sungguhan.</p><div class="reward-preview"><div class="reward-icon">🏆</div><div><b>Campus Achiever</b><small>Badge spesial jika menjawab semua soal dengan benar.</small></div></div></div>
+  </div>
+  <button class="primary full" onclick="startGame()">Mulai misi sekarang →</button>
+ </section>
+
+ <section id="play" class="play-card hidden">
+  <div class="play-top"><span class="pill" id="categoryLabel">Kategori</span><span class="pill">⭐ <span id="roundScore">0</span> XP ronde ini</span><span class="pill" id="counter">Soal 1/10</span></div>
+  <div class="progress-wrap"><div class="progress-label"><span id="progressText">PROGRES MISI</span><span id="progressPercent">0%</span></div><div class="progress"><i id="progressBar"></i></div></div>
+  <div class="q-number" id="qNumber">PERTANYAAN 01</div><div class="question" id="question"></div>
+  <div class="answers" id="answers"></div><div id="feedback" class="feedback hidden"></div>
+  <div class="play-actions"><button class="secondary" onclick="goHome()">← Kembali ke beranda</button><button id="next" class="primary hidden" onclick="nextQuestion()">Lanjutkan →</button></div>
+ </section>
+
+ <section id="result" class="result-card hidden">
+  <div class="result-top"><div class="result-emoji" id="resultEmoji">🏆</div><h2 id="resultTitle">Misi selesai!</h2><p id="resultText"></p></div>
+  <div class="score-grid">
+   <div class="score-box"><b id="finalScore">0</b><small>XP didapat</small></div>
+   <div class="score-box"><b id="correctCount">0/10</b><small>Jawaban benar</small></div>
+   <div class="score-box"><b id="accuracy">0%</b><small>Akurasi</small></div>
+   <div class="score-box"><b id="totalPoints">0</b><small>Total XP</small></div>
+  </div>
+  <div class="reward-box"><b id="rewardTitle">🎖️ Penghargaan terbuka!</b><p id="rewardText"></p></div>
+  <div class="review"><h3>📚 Evaluasi jawabanmu</h3><div id="reviewList"></div></div>
+  <button class="primary full" onclick="startGame()">Ulangi misi ini ↻</button><button class="secondary full" onclick="goHome()">Pilih misi lain</button>
+ </section>
+</main>
+<footer>KampusQuest · Game edukasi untuk mendukung keterampilan mahasiswa · Proyek pembelajaran berbantuan AI</footer>
+<script>
+const bank={
+campus:[
+['Apa langkah pertama yang sebaiknya dilakukan ketika menerima beberapa tugas dengan tenggat berdekatan?',['Mengerjakan yang terlihat paling mudah','Mencatat semua tenggat dan memperkirakan waktu pengerjaan','Menunggu instruksi teman','Mengerjakan semuanya pada malam terakhir'],'B','Daftar tenggat membantu melihat prioritas dan membagi waktu secara realistis.'],
+['Teknik belajar dengan sesi fokus sekitar 25 menit dan jeda singkat dikenal sebagai...',['Pomodoro','Debat aktif','Simulasi','Eksperimen'],'A','Teknik Pomodoro membagi waktu belajar menjadi sesi fokus dan istirahat singkat.'],
+['Jika belum memahami materi kuliah, tindakan yang paling efektif adalah...',['Mengabaikan materi tersebut','Menyalin jawaban teman','Mencatat bagian yang belum dipahami lalu bertanya','Berhenti mengikuti perkuliahan'],'C','Pertanyaan yang spesifik akan memudahkan dosen atau teman membantu menjelaskan.'],
+['Apa manfaat membuat kalender akademik pribadi?',['Menggantikan seluruh jadwal kuliah','Mengingat jadwal kuliah, ujian, dan tenggat tugas','Membuat tugas otomatis selesai','Menghindari semua kegiatan kelompok'],'B','Kalender akademik membantu mengantisipasi kegiatan penting dan mengurangi risiko terlambat.'],
+['Saat mendapat tugas kelompok, pembagian kerja yang baik seharusnya...',['Dibagi sesuai kesepakatan dan kemampuan anggota','Diserahkan kepada satu orang','Dibiarkan sampai mendekati tenggat','Dikerjakan tanpa komunikasi'],'A','Pembagian tugas yang jelas membuat tanggung jawab setiap anggota lebih terukur.'],
+['Apa yang sebaiknya dilakukan sebelum presentasi di kelas?',['Membaca slide untuk pertama kali saat tampil','Menguji materi dan berlatih menyampaikan poin utama','Memenuhi slide dengan paragraf panjang','Menghindari latihan agar spontan'],'B','Latihan membantu mengatur waktu, memahami alur, dan meningkatkan kejelasan penyampaian.'],
+['Ketika jadwal kuliah dan kegiatan organisasi bertabrakan, langkah terbaik adalah...',['Mengabaikan keduanya','Menilai prioritas, mengomunikasikan kondisi, lalu menyusun alternatif','Tidak memberi kabar kepada siapa pun','Memilih kegiatan secara acak'],'B','Komunikasi sejak awal dan penentuan prioritas membantu mencari solusi yang bertanggung jawab.'],
+['Mengapa penting membaca rubrik penilaian sebelum mengerjakan tugas?',['Agar mengetahui kriteria dan aspek yang dinilai','Agar tidak perlu memahami materi','Agar bisa menyalin tugas sebelumnya','Agar tugas menjadi lebih panjang'],'A','Rubrik menjelaskan ekspektasi penilaian sehingga pengerjaan lebih terarah.'],
+['Cara mencatat materi kuliah yang efektif adalah...',['Menyalin semua kata tanpa memahami','Mencatat konsep utama, contoh, dan pertanyaan','Hanya memotret papan tulis','Menunggu catatan dari orang lain'],'B','Catatan ringkas dengan konsep utama dan contoh membantu proses memahami serta mengulang materi.'],
+['Jika hasil ujian belum sesuai harapan, sikap yang produktif adalah...',['Mencari tahu bagian yang belum dikuasai dan memperbaiki cara belajar','Menyalahkan semua anggota kelas','Berhenti mempelajari mata kuliah','Menghapus semua catatan'],'A','Evaluasi kesalahan dapat menjadi dasar untuk menentukan strategi belajar berikutnya.'],
+['Apa tujuan utama membuat daftar prioritas harian?',['Mengerjakan tugas secara acak','Memastikan pekerjaan penting mendapat perhatian lebih dahulu','Mengisi waktu dengan sebanyak mungkin kegiatan','Menghindari istirahat'],'B','Prioritas membantu menggunakan waktu dan energi untuk hal yang paling penting.'],
+['Saat dosen memberikan instruksi tugas yang belum jelas, sebaiknya...',['Menebak seluruh instruksi','Meminta klarifikasi dengan pertanyaan yang sopan dan spesifik','Mengikuti instruksi kelas lain','Tidak mengerjakan tugas'],'B','Klarifikasi mengurangi risiko salah memahami tujuan dan format tugas.'],
+['Belajar aktif dapat dilakukan dengan cara...',['Membaca berulang tanpa menguji pemahaman','Mencoba menjelaskan kembali materi dengan kata sendiri','Hanya menandai semua kalimat','Membuka banyak tab tanpa fokus'],'B','Menjelaskan kembali materi membantu menguji apakah konsep sudah dipahami.'],
+['Mengapa file tugas perlu diberi nama yang konsisten?',['Supaya mudah ditemukan dan tidak tertukar','Supaya ukuran file mengecil','Supaya internet lebih cepat','Supaya isi file berubah otomatis'],'A','Nama file yang jelas memudahkan pengelolaan dan pengumpulan tugas.'],
+['Ketika mengutip pendapat dari sumber lain dalam tugas, kita perlu...',['Menghapus nama penulis','Mencantumkan sumber sesuai aturan sitasi','Mengubah beberapa kata tanpa sumber','Menganggap semua informasi sebagai pendapat sendiri'],'B','Sitasi menghargai karya orang lain dan membantu pembaca menelusuri sumber.']
+],
+digital:[
+['Apa ciri kata sandi yang lebih aman?',['Nama sendiri dan tanggal lahir','Kombinasi panjang dan unik untuk setiap akun','Kata "password"','Satu kata sandi untuk semua akun'],'B','Kata sandi panjang dan unik mengurangi dampak jika salah satu akun mengalami kebocoran.'],
+['Apa yang sebaiknya dilakukan jika menerima tautan mencurigakan yang meminta data login?',['Langsung memasukkan data','Meneruskan ke semua teman','Tidak membuka tautan dan memeriksa sumber resminya','Mengirim kata sandi melalui chat'],'C','Tautan phishing dapat meniru layanan resmi untuk mencuri informasi akun.'],
+['Penyimpanan cloud berguna karena...',['File hanya bisa dibuka di satu komputer','File dapat disimpan dan diakses melalui internet sesuai izin','Tidak membutuhkan pengamanan akun','Semua file otomatis menjadi publik'],'B','Cloud memudahkan akses dan kolaborasi, tetapi pengaturan izin tetap perlu diperhatikan.'],
+['Apa fungsi autentikasi dua faktor (2FA)?',['Menambah lapisan verifikasi saat login','Menghapus semua file lama','Mempercepat kapasitas baterai','Mengganti nama pengguna'],'A','2FA meminta bukti tambahan selain kata sandi untuk meningkatkan keamanan akun.'],
+['Format PDF sering digunakan untuk mengirim dokumen karena...',['Tampilan dokumen relatif konsisten di berbagai perangkat','Selalu bisa diedit tanpa aplikasi','Ukurannya pasti nol','Tidak bisa berisi teks'],'A','PDF membantu mempertahankan tata letak dokumen ketika dibuka di perangkat berbeda.'],
+['Saat bekerja bersama pada dokumen daring, fitur yang paling membantu adalah...',['Kolaborasi dan komentar dengan pengaturan akses','Mengirim banyak versi tanpa nama','Menghapus riwayat perubahan','Membagikan kata sandi akun'],'A','Kolaborasi daring memungkinkan anggota mengedit dan memberi masukan sesuai izin.'],
+['Mengapa perlu membuat salinan cadangan (backup) file tugas?',['Agar file tetap tersedia jika file utama hilang atau rusak','Agar file otomatis mendapat nilai A','Agar komputer tidak perlu dimatikan','Agar internet menjadi gratis'],'A','Backup mengurangi risiko kehilangan pekerjaan akibat kerusakan perangkat atau kesalahan penghapusan.'],
+['Apa arti sumber informasi digital yang kredibel?',['Informasinya selalu viral','Penulis, bukti, tanggal, dan penerbitnya dapat diperiksa','Memiliki desain paling menarik','Tidak mencantumkan referensi'],'B','Kredibilitas dinilai dari kejelasan sumber dan bukti, bukan popularitas tampilannya.'],
+['Ketika menggunakan AI untuk membantu tugas, tindakan yang bertanggung jawab adalah...',['Menyalin semua hasil tanpa pemeriksaan','Memeriksa fakta, memahami isi, dan mengikuti aturan dosen','Mengaku melakukan semua riset sendiri','Memasukkan data pribadi sensitif sembarangan'],'B','AI dapat keliru. Hasilnya perlu diverifikasi dan pengguna tetap bertanggung jawab atas tugasnya.'],
+['Apa kegunaan spreadsheet seperti Excel atau Google Sheets?',['Mengolah data, rumus, dan tabel','Mengganti sistem operasi','Memperbaiki perangkat keras','Membuat koneksi internet'],'A','Spreadsheet membantu perhitungan, pengorganisasian, dan analisis data.'],
+['Sebelum mengunduh aplikasi, sebaiknya...',['Memeriksa sumber unduhan, izin aplikasi, dan reputasinya','Memilih tautan iklan acak','Mematikan semua fitur keamanan','Memberikan semua izin tanpa membaca'],'A','Sumber resmi dan pemeriksaan izin membantu mengurangi risiko aplikasi berbahaya.'],
+['Apa manfaat menggunakan folder berdasarkan mata kuliah?',['Memudahkan pencarian dan pengelompokan file','Membuat semua file terhapus','Mengubah isi dokumen','Membuat laptop selalu online'],'A','Struktur folder yang konsisten membantu mengelola materi dan tugas.'],
+['Jika menemukan informasi berbeda dari beberapa situs, sebaiknya...',['Memilih yang paling sensasional','Membandingkan sumber dan mencari rujukan tepercaya','Menganggap semuanya benar','Menyebarkan tanpa memeriksa'],'B','Perbandingan sumber membantu mengurangi risiko menerima informasi keliru.'],
+['Apa yang dimaksud dengan plagiarisme?',['Menggunakan karya atau gagasan orang lain tanpa pengakuan yang semestinya','Membuat daftar pustaka','Menulis hasil pengamatan sendiri','Berdiskusi untuk memahami materi'],'A','Plagiarisme terjadi ketika karya atau gagasan pihak lain digunakan tanpa atribusi yang layak.'],
+['Mengapa pembaruan perangkat lunak penting?',['Dapat memperbaiki bug dan menutup celah keamanan','Selalu menghapus semua data','Membuat perangkat tidak bisa dipakai','Menghilangkan kebutuhan backup'],'A','Pembaruan sering membawa perbaikan keamanan, stabilitas, dan fitur.']
+],
+finance:[
+['Apa langkah awal membuat anggaran bulanan mahasiswa?',['Mencatat pemasukan dan kebutuhan rutin','Membeli barang yang diinginkan','Menghabiskan uang di awal bulan','Meminjam tanpa perhitungan'],'A','Anggaran dimulai dengan mengetahui jumlah uang yang tersedia dan pengeluaran rutin.'],
+['Manakah contoh kebutuhan prioritas mahasiswa?',['Alat belajar yang diperlukan','Barang koleksi yang sedang tren','Aksesori yang jarang digunakan','Langganan hiburan tambahan yang tidak dipakai'],'A','Kebutuhan yang mendukung kuliah dan kehidupan sehari-hari perlu diprioritaskan.'],
+['Apa manfaat mencatat pengeluaran harian?',['Mengetahui ke mana uang digunakan','Membuat pemasukan bertambah otomatis','Menghilangkan semua biaya','Menghindari perencanaan'],'A','Catatan pengeluaran membantu menemukan pola belanja dan menyesuaikan anggaran.'],
+['Jika uang bulanan terbatas, keputusan yang lebih bijak adalah...',['Membandingkan kebutuhan dan menunda pembelian yang tidak mendesak','Membeli karena diskon saja','Menggunakan seluruh uang untuk hiburan','Tidak memperhatikan biaya transportasi'],'A','Mendahulukan kebutuhan penting membantu menjaga pengeluaran tetap terkendali.'],
+['Apa yang dimaksud dana darurat?',['Simpanan untuk kebutuhan tak terduga','Uang khusus untuk belanja impulsif','Dana yang harus dihabiskan setiap minggu','Pinjaman untuk membeli barang mewah'],'A','Dana darurat disiapkan untuk pengeluaran mendadak yang sulit diprediksi.'],
+['Mengapa penting membandingkan harga sebelum membeli perlengkapan kuliah?',['Agar dapat memilih produk sesuai kebutuhan dan anggaran','Agar selalu membeli yang paling mahal','Agar tidak perlu mengecek kualitas','Agar semua barang dibeli sekaligus'],'A','Membandingkan harga dan kualitas membantu membuat keputusan yang lebih rasional.'],
+['Apa risiko membeli barang hanya karena sedang diskon?',['Barang mungkin tidak dibutuhkan dan tetap menambah pengeluaran','Pasti membuat tabungan bertambah','Tidak memengaruhi anggaran','Selalu menjadi investasi'],'A','Diskon bukan penghematan jika barang tersebut sebenarnya tidak diperlukan.'],
+['Jika meminjam uang dari teman, sikap yang bertanggung jawab adalah...',['Menyepakati jumlah dan waktu pengembalian dengan jelas','Menghindari komunikasi','Menganggap pinjaman sebagai hadiah','Meminjam lagi tanpa rencana'],'A','Kesepakatan yang jelas menjaga kepercayaan dan hubungan baik.'],
+['Apa arti menabung secara konsisten?',['Menyisihkan sejumlah uang secara rutin sesuai kemampuan','Menunggu sampai uang tersisa sangat banyak','Menyimpan uang hanya saat ingin membeli barang','Menggunakan tabungan untuk semua keinginan'],'A','Kebiasaan rutin, meski nominalnya disesuaikan kemampuan, membantu membangun cadangan.'],
+['Manakah contoh pengeluaran variabel?',['Biaya makan yang berubah sesuai kebutuhan','Uang kuliah tetap per semester','Biaya kos tetap bulanan','Iuran tetap yang jumlahnya sama'],'A','Pengeluaran variabel dapat berubah dari satu periode ke periode lain.'],
+['Mengapa biaya kecil seperti ongkos atau minuman perlu dicatat?',['Karena jika sering terjadi, totalnya dapat cukup besar','Karena tidak pernah memengaruhi anggaran','Karena selalu dibayar orang lain','Karena tidak termasuk pengeluaran'],'A','Pengeluaran kecil yang berulang dapat memengaruhi total anggaran bulanan.'],
+['Apa keputusan yang baik sebelum berlangganan aplikasi berbayar?',['Memeriksa kebutuhan, harga, masa percobaan, dan pembaruan otomatis','Langsung memasukkan semua metode pembayaran','Menganggap semua langganan gratis selamanya','Tidak membaca ketentuan'],'A','Memahami biaya dan ketentuan mencegah tagihan yang tidak direncanakan.'],
+['Apa tujuan membedakan kebutuhan dan keinginan?',['Membantu menentukan prioritas pengeluaran','Membuat semua keinginan harus dibeli','Menghindari pencatatan','Menambah biaya rutin'],'A','Pembedaan ini membantu mengalokasikan uang untuk hal yang paling penting.'],
+['Jika mendapat pemasukan tambahan, langkah yang baik adalah...',['Mengevaluasi anggaran dan menyisihkan sebagian untuk tujuan keuangan','Langsung menghabiskan semuanya','Menaikkan semua pengeluaran','Tidak mencatat pemasukan'],'A','Pemasukan tambahan dapat digunakan untuk tabungan, kebutuhan, atau tujuan yang sudah direncanakan.'],
+['Apa fungsi bukti pembayaran digital?',['Membantu memeriksa dan membuktikan transaksi','Menggantikan semua anggaran','Menambah saldo otomatis','Menjamin barang selalu berkualitas'],'A','Bukti transaksi berguna untuk pengecekan jika terjadi kesalahan atau sengketa pembayaran.']
+],
+communication:[
+['Dalam diskusi kelompok, cara menyampaikan ketidaksetujuan yang baik adalah...',['Menjelaskan alasan dengan sopan dan tetap mendengarkan','Memotong pembicaraan','Menyerang pribadi anggota','Meninggalkan diskusi'],'A','Fokus pada ide dan alasan, bukan menyerang orang yang menyampaikan pendapat.'],
+['Apa ciri komunikasi profesional melalui email kepada dosen?',['Subjek jelas, salam sopan, identitas, dan tujuan pesan','Mengirim pesan kosong','Menggunakan huruf kapital seluruhnya','Mengirim berkali-kali tanpa jeda'],'A','Struktur yang jelas dan bahasa sopan membantu penerima memahami maksud pesan.'],
+['Ketika anggota kelompok mengalami kesulitan menyelesaikan tugas, sebaiknya...',['Mengajak berdiskusi untuk mengetahui kendala dan menyusun solusi','Langsung menyalahkannya di grup','Menghapus namanya tanpa pembicaraan','Membiarkan tugas terbengkalai'],'A','Mencari penyebab dan solusi bersama lebih konstruktif daripada langsung menyalahkan.'],
+['Apa arti mendengarkan secara aktif?',['Memperhatikan, tidak memotong, dan mengonfirmasi pemahaman','Menunggu giliran berbicara saja','Melihat ponsel selama diskusi','Mengabaikan pendapat berbeda'],'A','Mendengarkan aktif menunjukkan perhatian dan mengurangi salah paham.'],
+['Seorang pemimpin tim yang baik seharusnya...',['Membantu mengarahkan tim dan membuka ruang kontribusi anggota','Mengambil semua keputusan sendiri','Membebankan seluruh tugas kepada anggota tertentu','Menolak masukan'],'A','Kepemimpinan yang baik mengarahkan pekerjaan sekaligus menghargai kontribusi tim.'],
+['Apa yang perlu dilakukan setelah rapat organisasi?',['Membagikan rangkuman keputusan, tugas, dan tenggat','Mengandalkan ingatan masing-masing','Mengubah hasil rapat tanpa memberi tahu','Menghapus catatan rapat'],'A','Rangkuman membuat tindak lanjut dan tanggung jawab lebih jelas.'],
+['Jika terjadi konflik pendapat, langkah awal yang baik adalah...',['Mendengarkan sudut pandang dan mencari pokok masalah','Menyebarkan konflik ke media sosial','Memaksakan pendapat sendiri','Menghindari semua komunikasi'],'A','Memahami sumber perbedaan membantu tim mencari jalan tengah.'],
+['Saat menerima kritik terhadap pekerjaan, sikap yang produktif adalah...',['Memahami masukan dan memilah hal yang dapat diperbaiki','Langsung membalas dengan emosi','Menganggap kritik sebagai serangan pribadi','Menolak semua saran'],'A','Kritik yang disampaikan dengan tepat dapat menjadi masukan untuk meningkatkan kualitas kerja.'],
+['Apa contoh etika saat rapat daring?',['Memastikan mikrofon dan lingkungan siap serta menghargai giliran bicara','Memutar musik keras','Meninggalkan rapat tanpa kabar','Berbicara bersamaan dengan semua orang'],'A','Persiapan teknis dan sikap saling menghargai membuat rapat lebih efektif.'],
+['Mengapa pembagian peran dalam kepanitiaan perlu disepakati?',['Agar tanggung jawab dan alur koordinasi jelas','Agar hanya ketua yang bekerja','Agar tidak ada evaluasi','Agar semua orang mengerjakan hal yang sama'],'A','Peran yang jelas mengurangi tumpang tindih dan pekerjaan yang terlewat.'],
+['Ketika menghubungi narasumber kegiatan, informasi penting yang perlu disampaikan adalah...',['Tujuan kegiatan, waktu, tempat, dan bentuk keterlibatan yang diminta','Hanya emoji','Permintaan tanpa konteks','Informasi yang belum pasti sebagai fakta'],'A','Informasi lengkap membantu narasumber memahami undangan dan mengambil keputusan.'],
+['Apa yang dimaksud umpan balik yang konstruktif?',['Masukan spesifik yang berfokus pada perbaikan','Komentar yang merendahkan','Pujian palsu tanpa isi','Kritik tanpa contoh'],'A','Umpan balik konstruktif menjelaskan hal yang dapat ditingkatkan dan bagaimana memperbaikinya.'],
+['Jika tidak dapat menghadiri rapat, tindakan yang tepat adalah...',['Memberi kabar lebih awal dan meminta rangkuman hasil rapat','Tidak hadir tanpa informasi','Mengirim kabar setelah rapat selesai','Menyalahkan anggota lain'],'A','Pemberitahuan lebih awal membantu tim menyesuaikan koordinasi.'],
+['Dalam kerja tim, mengapa komitmen terhadap tenggat penting?',['Agar pekerjaan anggota lain tidak terhambat','Agar tidak perlu komunikasi','Agar tugas bisa ditunda bersama','Agar pembagian kerja dihapus'],'A','Keterlambatan satu bagian dapat memengaruhi rangkaian pekerjaan tim.'],
+['Apa cara yang baik memperkenalkan diri saat wawancara organisasi?',['Menjelaskan diri, pengalaman relevan, dan alasan ingin bergabung secara jujur','Mengarang pengalaman','Memberi jawaban satu kata untuk semua pertanyaan','Membandingkan diri dengan peserta lain'],'A','Jawaban yang jujur dan relevan membantu pewawancara memahami motivasi serta kemampuanmu.']
+],
+engineering:[
+['Satuan SI untuk kuat arus listrik adalah...',['Volt','Ohm','Ampere','Watt'],'C','Ampere (A) merupakan satuan SI untuk kuat arus listrik.'],
+['Hukum Ohm menghubungkan besaran...',['Tegangan, arus, dan hambatan','Massa, gaya, dan percepatan','Energi, massa, dan waktu','Frekuensi, suhu, dan tekanan'],'A','Hukum Ohm dinyatakan dengan V = I × R.'],
+['Komponen yang berfungsi membatasi arus dalam rangkaian sederhana adalah...',['Resistor','Saklar','Kabel','Baterai'],'A','Resistor memberikan hambatan terhadap aliran arus listrik.'],
+['Komponen yang dapat menyimpan energi dalam medan listrik adalah...',['Kapasitor','Sekring','Lampu','Transformator'],'A','Kapasitor menyimpan muatan dan energi dalam medan listrik.'],
+['Bahan yang relatif mudah menghantarkan arus listrik disebut...',['Isolator','Konduktor','Dielektrik','Keramik'],'B','Konduktor seperti tembaga memiliki elektron yang relatif mudah bergerak.'],
+['Jika tegangan 12 V diberikan pada resistor 4 Ω, besar arus menurut Hukum Ohm adalah...',['2 A','3 A','4 A','48 A'],'B','I = V/R = 12/4 = 3 A.'],
+['Alat ukur yang digunakan untuk mengukur tegangan listrik adalah...',['Amperemeter','Voltmeter','Ohmmeter saja','Termometer'],'B','Voltmeter digunakan untuk mengukur beda potensial atau tegangan.'],
+['Fungsi saklar pada rangkaian listrik adalah...',['Menyambung atau memutus jalur arus','Menyimpan energi kimia','Mengukur suhu','Menaikkan massa beban'],'A','Saklar mengendalikan apakah jalur rangkaian berada dalam kondisi tersambung atau terputus.'],
+['Dalam rangkaian seri, arus yang melalui setiap komponen ideal adalah...',['Sama','Selalu nol','Berbeda pada setiap komponen','Tidak dapat mengalir'],'A','Pada rangkaian seri hanya ada satu jalur arus, sehingga arus sama di setiap komponen.'],
+['Besaran daya listrik dapat dihitung menggunakan rumus...',['P = V × I','P = m × g','P = F/A','P = s/t'],'A','Daya listrik adalah hasil kali tegangan dan arus.'],
+['Fungsi utama dioda dalam rangkaian dasar adalah...',['Mengalirkan arus terutama ke satu arah','Menyimpan data digital','Mengukur panjang','Mengubah massa menjadi energi'],'A','Dioda memiliki karakteristik penghantaran arus yang dominan satu arah.'],
+['Frekuensi menyatakan...',['Jumlah getaran atau siklus tiap satuan waktu','Jarak tempuh total','Besar massa benda','Energi potensial saja'],'A','Satuan frekuensi adalah hertz (Hz), yaitu siklus per detik.'],
+['Alat untuk mengukur kuat arus listrik adalah...',['Voltmeter','Amperemeter','Barometer','Mistar'],'B','Amperemeter dipasang sesuai aturan rangkaian untuk mengukur arus.'],
+['Pada rangkaian paralel, tegangan pada tiap cabang ideal adalah...',['Sama','Selalu berbeda','Selalu nol','Tidak dapat ditentukan'],'A','Setiap cabang paralel terhubung pada dua titik potensial yang sama.'],
+['Tujuan utama penggunaan sekering (fuse) adalah...',['Melindungi rangkaian dengan memutus arus berlebih','Menambah tegangan tanpa batas','Menyimpan muatan','Mengukur hambatan'],'A','Sekering dirancang putus ketika arus melebihi batas tertentu sehingga membantu melindungi rangkaian.']
+],
+math:[
+['Hasil dari 12 ÷ 3 + 2 adalah...',['2','4','6','8'],'C','Kerjakan pembagian lebih dahulu: 12 ÷ 3 = 4, lalu 4 + 2 = 6.'],
+['Jika 3x = 21, nilai x adalah...',['6','7','8','9'],'B','Bagi kedua ruas dengan 3, sehingga x = 7.'],
+['Turunan fungsi f(x) = x² adalah...',['x','2x','x³','2'],'B','Dengan aturan pangkat, turunan x² adalah 2x.'],
+['Nilai 25% dari 200 adalah...',['25','40','50','75'],'C','25% = 1/4, sehingga 200 ÷ 4 = 50.'],
+['Luas segitiga dengan alas 8 cm dan tinggi 5 cm adalah...',['13 cm²','20 cm²','40 cm²','80 cm²'],'B','L = 1/2 × alas × tinggi = 1/2 × 8 × 5 = 20 cm².'],
+['Jika 2x + 5 = 17, nilai x adalah...',['5','6','7','11'],'B','Kurangi kedua ruas dengan 5: 2x = 12, sehingga x = 6.'],
+['Rata-rata dari 4, 6, dan 8 adalah...',['5','6','7','8'],'B','Rata-rata = (4 + 6 + 8)/3 = 18/3 = 6.'],
+['Hasil dari 3² + 4² adalah...',['12','25','49','7'],'B','3² = 9 dan 4² = 16, sehingga jumlahnya 25.'],
+['Jika sebuah barang seharga Rp80.000 mendapat potongan 10%, harga setelah diskon adalah...',['Rp8.000','Rp70.000','Rp72.000','Rp78.000'],'C','Diskon 10% = Rp8.000, jadi harga akhir Rp72.000.'],
+['Keliling persegi dengan sisi 7 cm adalah...',['14 cm','21 cm','28 cm','49 cm'],'C','Keliling persegi = 4 × sisi = 4 × 7 = 28 cm.'],
+['Jika y = 2x dan x = 5, maka y adalah...',['2','5','7','10'],'D','Substitusi x = 5 ke y = 2x menghasilkan y = 10.'],
+['Hasil dari 1/2 + 1/4 adalah...',['1/6','2/6','3/4','1'],'C','Samakan penyebut: 1/2 = 2/4, sehingga 2/4 + 1/4 = 3/4.'],
+['Jika jarak 120 km ditempuh selama 2 jam, kecepatan rata-ratanya adalah...',['40 km/jam','50 km/jam','60 km/jam','240 km/jam'],'C','Kecepatan rata-rata = jarak/waktu = 120/2 = 60 km/jam.'],
+['Nilai dari 5 × (6 − 2) adalah...',['20','28','30','40'],'A','Kerjakan yang di dalam kurung: 6 − 2 = 4, lalu 5 × 4 = 20.'],
+['Jika sebuah data berjumlah 30 dan terdiri dari 5 nilai, rata-ratanya adalah...',['5','6','10','15'],'B','Rata-rata = jumlah seluruh nilai/banyak data = 30/5 = 6.']
+]};
+const labels={campus:'🎓 Strategi Perkuliahan',digital:'💻 Digital & Produktivitas',finance:'💰 Keuangan Mahasiswa',communication:'🗣️ Komunikasi & Organisasi',engineering:'⚡ Teknik & Sains Dasar',math:'➗ Logika & Matematika'};
+let category='campus',questions=[],index=0,score=0,correct=0,answersLog=[];
+let totalXP=Number(localStorage.getItem('kampusquestXP')||0);
+let missionsDone=Number(localStorage.getItem('kampusquestMissions')||0);
+function levelFor(xp){return Math.floor(xp/200)+1}
+function updateHeader(){document.getElementById('headerPoints').textContent=totalXP;document.getElementById('headerLevel').textContent=levelFor(totalXP)}
+function selectCat(el){document.querySelectorAll('.category').forEach(x=>x.classList.remove('selected'));el.classList.add('selected');category=el.dataset.cat}
+function show(id){['home','play','result'].forEach(x=>document.getElementById(x).classList.toggle('hidden',x!==id))}
+function shuffle(arr){let a=[...arr];for(let i=a.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function startGame(){questions=shuffle(bank[category]).slice(0,10);index=0;score=0;correct=0;answersLog=[];document.getElementById('categoryLabel').textContent=labels[category];document.getElementById('roundScore').textContent='0';show('play');renderQuestion()}
+function renderQuestion(){let q=questions[index];document.getElementById('counter').textContent=`Soal ${index+1}/10`;document.getElementById('qNumber').textContent=`PERTANYAAN ${String(index+1).padStart(2,'0')}`;document.getElementById('question').textContent=q[0];document.getElementById('progressText').textContent=`PROGRES MISI · ${index+1} DARI 10`;document.getElementById('progressPercent').textContent=Math.round(index/10*100)+'%';document.getElementById('progressBar').style.width=(index/10*100)+'%';document.getElementById('feedback').className='feedback hidden';document.getElementById('next').classList.add('hidden');let opts=shuffle(q[1].map((v,i)=>({v,letter:'ABCD'[i],correct:'ABCD'[i]===q[2]})));let area=document.getElementById('answers');area.innerHTML='';opts.forEach(o=>{let b=document.createElement('button');b.className='answer';let letter=document.createElement('span');letter.className='letter';letter.textContent=o.letter;let txt=document.createElement('span');txt.textContent=o.v;b.append(letter,txt);b.onclick=()=>choose(o,b);area.appendChild(b)})}
+function choose(o,btn){let q=questions[index],ok=o.correct;document.querySelectorAll('.answer').forEach(b=>{b.disabled=true;let letter=b.querySelector('.letter').textContent;if(letter===q[2])b.classList.add('correct')});if(!ok)btn.classList.add('wrong');if(ok){score+=10;correct++}document.getElementById('roundScore').textContent=score;answersLog.push({q:q[0],ok,explanation:q[3],correctAnswer:q[1]['ABCD'.indexOf(q[2])]});let f=document.getElementById('feedback');f.className='feedback '+(ok?'good':'bad');f.textContent=(ok?'✓ Tepat! Kamu mendapat 10 XP. ':'Belum tepat. Jawaban yang benar: '+q[1]['ABCD'.indexOf(q[2])]+'. ')+q[3];document.getElementById('progressText').textContent=`PROGRES MISI · ${index+1} DARI 10`;document.getElementById('progressPercent').textContent=Math.round((index+1)/10*100)+'%';document.getElementById('progressBar').style.width=((index+1)/10*100)+'%';document.getElementById('next').textContent=index===9?'Lihat hasil misi →':'Soal berikutnya →';document.getElementById('next').classList.remove('hidden')}
+function nextQuestion(){index++;if(index<10)renderQuestion();else finish()}
+function finish(){totalXP+=score;missionsDone++;localStorage.setItem('kampusquestXP',totalXP);localStorage.setItem('kampusquestMissions',missionsDone);updateHeader();let pct=correct*10;let title=correct===10?'Luar biasa! Sempurna!':correct>=8?'Kerja hebat!':correct>=6?'Misi berhasil!': 'Tetap semangat, terus berkembang!';document.getElementById('resultEmoji').textContent=correct===10?'🏆':correct>=8?'🥇':correct>=6?'🌟':'🌱';document.getElementById('resultTitle').textContent=title;document.getElementById('resultText').textContent=`Kamu menyelesaikan misi ${labels[category]}. Setiap latihan adalah langkah untuk menjadi mahasiswa yang lebih siap.`;document.getElementById('finalScore').textContent='+'+score;document.getElementById('correctCount').textContent=correct+'/10';document.getElementById('accuracy').textContent=pct+'%';document.getElementById('totalPoints').textContent=totalXP;let rewardTitle,rewardText;if(correct===10){rewardTitle='🏆 Badge Campus Achiever terbuka!';rewardText='Kamu mendapatkan penghargaan virtual Campus Achiever karena menjawab seluruh pertanyaan dengan benar. Anggap ini sebagai medali pencapaian belajarmu!'}else if(correct>=8){rewardTitle='🥇 Badge High Performer terbuka!';rewardText='Kamu mendapatkan badge High Performer dan gelar virtual Mahasiswa Unggul. Pertahankan rasa ingin tahumu!'}else if(correct>=6){rewardTitle='🌟 Badge Rising Star terbuka!';rewardText='Kamu mendapatkan badge Rising Star. Kamu sudah menguasai sebagian besar materi, lanjutkan latihan untuk membuka pencapaian berikutnya.'}else{rewardTitle='🌱 Badge First Step terbuka!';rewardText='Kamu mendapatkan badge First Step karena sudah menyelesaikan misi. Baca kembali pembahasan dan coba lagi untuk meningkatkan XP.'}document.getElementById('rewardTitle').textContent=rewardTitle;document.getElementById('rewardText').textContent=rewardText;document.getElementById('reviewList').innerHTML=answersLog.map((a,i)=>`<div class="review-item"><b>${i+1}. ${a.ok?'✅ Benar':'📖 Perlu dipelajari'} — ${a.q}</b>${a.ok?'Jawabanmu tepat. ':'Jawaban benar: '+a.correctAnswer+'. '}${a.explanation}</div>`).join('');show('result')}
+function goHome(){show('home')}
+updateHeader();
+</script>
+</body>
+</html>
